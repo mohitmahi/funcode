@@ -11,9 +11,9 @@ public class PushPopMinPop {
     //Duplicates => Corner Case.
 
     //pop 3 cases:
-    // 1. Peek of both LL and PQ are same => O(1) + O(1)
-    // 2. popMin & peek of LL is not min  => O(N) + O(logN)
-    // 2. pop & peek of PQ is not peek of LL  => O(1) + O(N)
+    // 1. Peek of both LL and PQ are same => O(1)LL + O(logN)PQ
+    // 2. popMin & peek of LL is not min  => O(N)LL + O(logN)PQ
+    // 2. pop & peek of PQ is not peek of LL  => O(1)LL + O(N)PQ
 
     final LinkedList<Integer> stack = new LinkedList<>();                        // DLL to allow using as stack but allow to remove any item in O(1).
     final PriorityQueue<Integer> minHeap = new PriorityQueue<>(Integer::compare);  //Min Heap to hold all elements but keep min at root, and re-balance after add/delete
@@ -41,13 +41,14 @@ public class PushPopMinPop {
         System.out.println(stackOp.popMin()); //Remove last 2  //Min => 3     [3]
         System.out.println(stackOp.min());    //Min => 3
         stackOp.printCurrentView();
+        
+        stackOp.clear();
     }
 
     void pop() {
         if ((minHeap.size()) > 0) {
             if(minHeap.peek().equals(stack.peek())) {
-               popMin();  // O(1) + O(1)
-               return;
+               minHeap.poll(); // O(logN)
             } else {
                 minHeap.remove(stack.peek()); // O(N)
             }
