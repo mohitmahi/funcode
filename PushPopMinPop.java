@@ -8,15 +8,17 @@ public class PushPopMinPop {
     //Time pop()  O(1) + O(N) (worst case will O(N) for removing an item from PQ)
     //Time getMin() O(1)
     //Time popMin() O(1)(DLL) + O(logN)(PQ)  [*tricky*]
+
     //Duplicates => Corner Case.
+    // Multi-Threading ==> Concurrent Pop/Push/PopMin ==> Use ConcurrentLinkedDeque
 
     //pop 3 cases:
     // 1. Peek of both LL and PQ are same => O(1)LL + O(logN)PQ
     // 2. popMin & peek of LL is not min  => O(N)LL + O(logN)PQ
     // 2. pop & peek of PQ is not peek of LL  => O(1)LL + O(N)PQ
 
-    final LinkedList<Integer> stack = new LinkedList<>();                        // DLL to allow using as stack but allow to remove any item in O(1).
-    final PriorityQueue<Integer> minHeap = new PriorityQueue<>(Integer::compare);  //Min Heap to hold all elements but keep min at root, and re-balance after add/delete
+    final LinkedList<Integer> stack = new LinkedList<>();                          //  DLL to allow using as stack but allow to remove any item in O(1).
+    final PriorityQueue<Integer> minHeap = new PriorityQueue<>(Integer::compare);  //  Min Heap to hold all elements but keep min at root, and re-balance after add/delete
 
     public static void main(String[] args) {
         PushPopMinPop stackOp = new PushPopMinPop();
@@ -41,7 +43,7 @@ public class PushPopMinPop {
         System.out.println(stackOp.popMin()); //Remove last 2  //Min => 3     [3]
         System.out.println(stackOp.min());    //Min => 3
         stackOp.printCurrentView();
-        
+
         stackOp.clear();
     }
 
@@ -50,7 +52,7 @@ public class PushPopMinPop {
             if(minHeap.peek().equals(stack.peek())) {
                minHeap.poll(); // O(logN)
             } else {
-                minHeap.remove(stack.peek()); // O(N)
+                minHeap.remove(stack.peek()); // O(N) due method indexOf(O)
             }
         }
         stack.pop(); // O(1)
@@ -67,7 +69,7 @@ public class PushPopMinPop {
 
     Integer popMin() {
         if(minHeap.isEmpty()) return Integer.MIN_VALUE;
-        stack.remove(minHeap.peek()); // O(N)
+        stack.remove(minHeap.peek()); // O(N) due to LL traversal to find and then delete is O(1)
         return minHeap.poll();            // O(logN)
     }
 
