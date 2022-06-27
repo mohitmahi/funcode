@@ -64,7 +64,7 @@ public class GraphTraversal {
     }
 
     private static Graph getAGraph() {
-        //       A
+        //       A      X->Y
         //      / \
         //     B   C
         //    /\   /\
