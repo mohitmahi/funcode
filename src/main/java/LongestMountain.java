@@ -23,8 +23,11 @@ public class LongestMountain {
         final List<Integer> input2 = List.of(2, 1, 4, 7, 3, 2, 4); //  \/\/
         System.out.println("\nLongest:: " + findLongestMountain(input2)); // ==> 5
 
-        final List<Integer> input3 = List.of(7, 3, 2, 4); //  \/
-        System.out.println("\nLongest:: " + findLongestMountain(input3)); // ==> 0
+        final List<Integer> input3 = List.of(2, 1, 4, 7, 3, 2, 0, 0, 4, 5, 6, 7, 9, 3, 1, 0); //  \/\_/\
+        System.out.println("\nLongest:: " + findLongestMountain(input3)); // ==> 10
+
+        final List<Integer> input4 = List.of(7, 3, 2, 4); //  \/
+        System.out.println("\nLongest:: " + findLongestMountain(input4)); // ==> 0
     }
 
     static int findLongestMountain(List<Integer> input) {
@@ -35,40 +38,25 @@ public class LongestMountain {
         int index = 0;
         int totalSteps = input.size();
 
-        boolean goingDownhill = false;
-
         while (index < totalSteps - 1 && input.get(index) >= input.get(index + 1))
             index++; //remove invalid starting downhill if any
 
         while (index < totalSteps - 1) {
-
-            // Reset currentStep and record last run
-            if (input.get(index) <= input.get(index + 1) && goingDownhill) {
-                if(goingDownhill) {
-                    goingDownhill = false;
-                    longestLength = Math.max(longestLength, currentStep + 1); //record last run
-                    currentStep = 0;
+            // Start Uphill
+            if (input.get(index) <= input.get(index + 1)) {
+                currentStep = 0;
+                while (index < totalSteps - 1 && input.get(index) <= input.get(index + 1)) {
+                    currentStep++;
+                    index++;
                 }
             }
-
-            // Start Uphill
-            while (index < totalSteps - 1 && input.get(index) <= input.get(index + 1)) {
-                currentStep++;
-                index++;
-            }
-
             // Start Downhill
             if (index < totalSteps - 1 && input.get(index) > input.get(index + 1)) {
-                goingDownhill = true;
-            }
-            while (index < totalSteps - 1 && input.get(index) > input.get(index + 1)) {
-                currentStep++;
-                index++;
-            }
-
-            //No more uphill, so record longestLength
-            if(index == totalSteps - 1 && goingDownhill) {
-                return Math.max(longestLength, currentStep + 1);
+                while (index < totalSteps - 1 && input.get(index) > input.get(index + 1)) {
+                    currentStep++;
+                    index++;
+                }
+                longestLength = Math.max(longestLength, currentStep + 1);
             }
         }
         return longestLength;
