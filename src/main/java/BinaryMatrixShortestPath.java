@@ -9,8 +9,11 @@ import java.util.Queue;
 public class BinaryMatrixShortestPath {
 
     public static void main(String[] args) {
-        int[][] grid = {{0,0,1}, {0,0,0}, {0,1,0}};
-        System.out.println(findShortestPath(grid));
+        //    0  0  1
+        //    0  1  0
+        //    0  0  0
+        int[][] grid = {{0,0,1}, {0,1,0}, {0,0,0}};
+        System.out.println(findShortestPath(grid)); // ==> 4
     }
 
     //BFS (O(N)
@@ -36,7 +39,9 @@ public class BinaryMatrixShortestPath {
         );
 
         while (!queue.isEmpty()) {
+
             final Node current = queue.poll();
+            System.out.println(current);
 
             if(current.row == MaxRow-1 && current.col == MaxCol-1) return current.distance;
 
@@ -44,9 +49,11 @@ public class BinaryMatrixShortestPath {
                 int row = current.row + direction.x;
                 int col = current.col + direction.y;
 
-                if(row > 0 && col > 0 && row < MaxRow && col < MaxCol && grid[row][col] == 0) {
-                    queue.add(Node.builder().row(row).col(col).distance(current.distance + 1).build());
-                    grid[row][col] = 1;
+                if(row >= 0 && col >=0 && row < MaxRow && col < MaxCol ) {
+                    if (grid[row][col] == 0) {
+                        queue.add(Node.builder().row(row).col(col).distance(current.distance + 1).build());
+                        grid[row][col] = 1;
+                    }
                 }
             }
         }
