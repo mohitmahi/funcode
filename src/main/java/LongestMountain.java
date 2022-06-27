@@ -17,8 +17,14 @@ public class LongestMountain {
 
 
     public static void main(String[] args) {
-        final List<Integer> input = List.of(2, 1, 4, 7, 3, 2, 1);
-        System.out.println("\nLongest:: " + findLongestMountain(input));
+        final List<Integer> input1 = List.of(2, 1, 4, 7, 3, 2, 1); //  \/\
+        System.out.println("\nLongest:: " + findLongestMountain(input1)); // ==> 6
+
+        final List<Integer> input2 = List.of(2, 1, 4, 7, 3, 2, 4); //  \/\/
+        System.out.println("\nLongest:: " + findLongestMountain(input2)); // ==> 5
+
+        final List<Integer> input3 = List.of(7, 3, 2, 4); //  \/
+        System.out.println("\nLongest:: " + findLongestMountain(input3)); // ==> 0
     }
 
     static int findLongestMountain(List<Integer> input) {
@@ -61,7 +67,7 @@ public class LongestMountain {
             }
 
             //No more uphill, so record longestLength
-            if(index == totalSteps - 1) {
+            if(index == totalSteps - 1 && goingDownhill) {
                 return Math.max(longestLength, currentStep + 1);
             }
         }
