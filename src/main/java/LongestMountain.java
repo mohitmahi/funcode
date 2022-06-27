@@ -38,7 +38,7 @@ public class LongestMountain {
         boolean goingDownhill = false;
 
         while (index < totalSteps - 1 && input.get(index) >= input.get(index + 1))
-            index++; //remove invalid starting cliff downhill if any
+            index++; //remove invalid starting downhill if any
 
         while (index < totalSteps - 1) {
 
