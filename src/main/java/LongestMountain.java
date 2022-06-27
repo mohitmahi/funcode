@@ -17,7 +17,7 @@ public class LongestMountain {
 
 
     public static void main(String[] args) {
-        final List<Integer> input = List.of(2, 1, 4, 7, 3, 2, 4);
+        final List<Integer> input = List.of(2, 1, 4, 7, 3, 2, 1);
         System.out.println("\nLongest:: " + findLongestMountain(input));
     }
 
@@ -30,7 +30,6 @@ public class LongestMountain {
         int totalSteps = input.size();
 
         boolean goingDownhill = false;
-        boolean goingUpHill = false;
 
         while (index < totalSteps - 1 && input.get(index) >= input.get(index + 1))
             index++; //remove invalid starting cliff downhill if any
@@ -39,26 +38,24 @@ public class LongestMountain {
 
             // Reset currentStep and record last run
             if (input.get(index) <= input.get(index + 1) && goingDownhill) {
-                goingDownhill = false;
-                goingUpHill = true;
-                longestLength = Math.max(longestLength, currentStep + 1); //record last run
-                currentStep = 0;
-
+                if(goingDownhill) {
+                    goingDownhill = false;
+                    longestLength = Math.max(longestLength, currentStep + 1); //record last run
+                    currentStep = 0;
+                }
             }
 
             // Start Uphill
             while (index < totalSteps - 1 && input.get(index) <= input.get(index + 1)) {
-                goingUpHill = true;
                 currentStep++;
                 index++;
             }
 
             // Start Downhill
-            while (index < totalSteps - 1 && input.get(index) > input.get(index + 1)) {
-                if (input.get(index) > input.get(index + 1) && goingUpHill) {
-                    goingUpHill = false;
-                }
+            if (index < totalSteps - 1 && input.get(index) > input.get(index + 1)) {
                 goingDownhill = true;
+            }
+            while (index < totalSteps - 1 && input.get(index) > input.get(index + 1)) {
                 currentStep++;
                 index++;
             }
