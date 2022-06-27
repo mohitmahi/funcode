@@ -18,7 +18,7 @@ public class BinaryMatrixShortestPath {
 
     //BFS (O(N)
     static int findShortestPath(int[][] grid) {
-        if(grid[0][0] != 0) return -1;
+        if (grid[0][0] != 0) return -1;
 
         int MaxRow = grid.length;
         int MaxCol = grid[0].length;
@@ -27,7 +27,28 @@ public class BinaryMatrixShortestPath {
         queue.add(Node.builder().row(0).col(0).distance(1).build());
         grid[0][0] = 1;
 
-        List<Point> directions = List.of(
+        final List<Point> directions = getAllDirections();
+
+        while (!queue.isEmpty()) {
+            final Node current = queue.poll();
+            System.out.println(current);
+
+            if (current.row == MaxRow - 1 && current.col == MaxCol - 1) return current.distance;
+
+            for (Point direction : directions) {
+                int row = current.row + direction.x;
+                int col = current.col + direction.y;
+                if (row >= 0 && col >= 0 && row < MaxRow && col < MaxCol && grid[row][col] == 0) {
+                    queue.add(Node.builder().row(row).col(col).distance(current.distance + 1).build());
+                    grid[row][col] = 1;
+                }
+            }
+        }
+        return -1;
+    }
+
+    private static List<Point> getAllDirections() {
+        return List.of(
                 Point.builder().x(0).y(1).build(),
                 Point.builder().x(0).y(-1).build(),
                 Point.builder().x(1).y(0).build(),
@@ -37,27 +58,6 @@ public class BinaryMatrixShortestPath {
                 Point.builder().x(-1).y(1).build(),
                 Point.builder().x(-1).y(-1).build()
         );
-
-        while (!queue.isEmpty()) {
-
-            final Node current = queue.poll();
-            System.out.println(current);
-
-            if(current.row == MaxRow-1 && current.col == MaxCol-1) return current.distance;
-
-            for(Point direction: directions) {
-                int row = current.row + direction.x;
-                int col = current.col + direction.y;
-
-                if(row >= 0 && col >=0 && row < MaxRow && col < MaxCol ) {
-                    if (grid[row][col] == 0) {
-                        queue.add(Node.builder().row(row).col(col).distance(current.distance + 1).build());
-                        grid[row][col] = 1;
-                    }
-                }
-            }
-        }
-        return -1;
     }
 
     @Data
