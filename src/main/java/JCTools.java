@@ -1,70 +1,83 @@
-import org.jctools.queues.MpmcArrayQueue;
+import org.jctools.queues.MessagePassingQueue;
+import org.jctools.queues.MpscArrayQueue;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 public class JCTools {
 
+
     public static void main(String[] args) throws InterruptedException {
-        Queue<Runnable> queue = createQueue(10000);
-        Queue<Runnable> queue1 = new LinkedBlockingQueue<>(10000);
 
+        int cnt = 49;
+        int i = 0;
+        Queue<Runnable> jcQueue = JCUtil.createQueue(10_000);
+        Queue<Runnable> linkedBlockingQueue = new ArrayBlockingQueue<>(10_000);
+        while (i++ < 50) {
+            int finalI = i;
+            jcQueue.add(() -> {
+                System.out.println("jcQueue::" + finalI);
+            });
+            linkedBlockingQueue.add(() -> {
+                System.out.println("linkedBlockingQueue::" + finalI);
+            });
+        }
+        System.out.println("linkedBlockingQueue:: " + linkedBlockingQueue.size());
+        System.out.println("jcQueue:: " + jcQueue.size());
 
-        new Thread(() -> {
-            int i = 0;
-            while (i++ < 100) {
-                int finalI = i;
-                queue.add(() -> {
-                    System.out.println("TEST1::" + finalI);
-                });
-                queue1.add(() -> {
-                    System.out.println("TEST1::" + finalI);
-                });
-            }
-        }).start();
-        new Thread(() -> {
-            int i = 0;
-            while (i++ < 100) {
-                int finalI = i;
-                queue.add(() -> {
-                    System.out.println("TEST2::" + finalI);
-                });
-                queue1.add(() -> {
-                    System.out.println("TEST2::" + finalI);
-                });
-            }
-        }).start();
-        new Thread(() -> {
-            int i = 0;
-            while (i++ < 100) {
-                int finalI = i;
-                queue.add(() -> {
-                    System.out.println("TEST3::" + finalI);
-                });
-                queue1.add(() -> {
-                    System.out.println("TEST3::" + finalI);
-                });
-            }
-        }).start();
+        Runnable task1 = () -> {
+            final List<Runnable> batch = new ArrayList<>(cnt);
+            System.out.println("BatchSize(Start):: " + batch.size());
+            long start = System.currentTimeMillis();
 
-        new Thread(() -> {
-            while (queue.peek() != null) {
-                Runnable poll = queue.poll();
-                poll.run();
-            }
-            System.out.println("Done-JPQueue");
-        }).start();
-        new Thread(() -> {
-            while (queue1.peek() != null) {
-                Runnable poll = queue1.poll();
-                poll.run();
-            }
-            System.out.println("Done-Normal");
-        }).start();
+            JCUtil.drain(jcQueue, cnt, (Runnable span) -> batch.add(span));
+
+            long duration = System.currentTimeMillis() - start;
+            System.out.println("BatchSize(End) jcQueue:: " + batch.size());
+            System.out.println("jcQueue duration:: " + duration);
+        };
+
+        Runnable task2 = () -> {
+            final List<Runnable> batch = new ArrayList<>(cnt);
+            System.out.println("BatchSize(Start):: " + batch.size());
+            long start = System.currentTimeMillis();
+
+            JCUtil.drain(linkedBlockingQueue, cnt, (Runnable span) -> batch.add(span));
+
+            long duration = System.currentTimeMillis() - start;
+            System.out.println("BatchSize(End) linkedBlockingQueue :: " + batch.size());
+            System.out.println("linkedBlockingQueue duration:: " + duration);
+        };
+
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        executorService.submit(task1);
+        executorService.submit(task2);
+        executorService.awaitTermination(5, TimeUnit.SECONDS);
+        executorService.shutdown();
     }
 
-    protected static Queue<Runnable> createQueue(int queueCapacity) {
+    static class JCUtil {
+        protected static MpscArrayQueue<Runnable> createQueue(int queueCapacity) {
+            return new MpscArrayQueue(queueCapacity);
+        }
 
-        return new MpmcArrayQueue(queueCapacity);
+        @SuppressWarnings("unchecked")
+        public static <Tspan> void drain(Queue<Tspan> queue, int maxExportBatchSize, Consumer<Tspan> consumer) {
+            if (queue instanceof MessagePassingQueue) {
+                ((MessagePassingQueue<Tspan>) queue).drain((span) -> consumer.accept(span), maxExportBatchSize);
+            } else {
+                int polledCount = 0;
+                Tspan t;
+                while (polledCount++ < maxExportBatchSize && (t = queue.poll()) != null) {
+                    consumer.accept(t);
+                }
+            }
+        }
     }
 }
