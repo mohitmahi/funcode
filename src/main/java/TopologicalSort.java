@@ -1,6 +1,5 @@
 // A Java program to print topological
 // sorting of a DAG
-import java.io.*;
 import java.util.*;
 
 // This class represents a directed graph
@@ -16,9 +15,9 @@ class Graph {
     Graph(int v)
     {
         V = v;
-        adj = new ArrayList<ArrayList<Integer> >(v);
+        adj = new ArrayList<>(v);
         for (int i = 0; i < v; ++i)
-            adj.add(new ArrayList<Integer>());
+            adj.add(new ArrayList<>());
     }
 
     // Function to add an edge into the graph
@@ -50,10 +49,10 @@ class Graph {
     // It uses recursive topologicalSortUtil()
     void topologicalSort()
     {
-        Stack<Integer> stack = new Stack<Integer>();
+        Stack<Integer> stack = new Stack<>();
 
         // Mark all the vertices as not visited
-        boolean visited[] = new boolean[V];
+        boolean[] visited = new boolean[V];
         for (int i = 0; i < V; i++)
             visited[i] = false;
 
@@ -62,11 +61,11 @@ class Graph {
         // Topological Sort starting
         // from all vertices one by one
         for (int i = 0; i < V; i++)
-            if (visited[i] == false)
+            if (!visited[i])
                 topologicalSortUtil(i, visited, stack);
 
         // Print contents of stack
-        while (stack.empty() == false)
+        while (!stack.empty())
             System.out.print(stack.pop() + " ");
     }
 
