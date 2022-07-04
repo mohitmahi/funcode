@@ -4,7 +4,7 @@ import java.util.*;
 
 // This class represents a directed graph
 // using adjacency list representation
-class Graph {
+class DagGraph {
     // No. of vertices
     private int V;
 
@@ -12,7 +12,7 @@ class Graph {
     private ArrayList<ArrayList<Integer> > adj;
 
     // Constructor
-    Graph(int v)
+    DagGraph(int v)
     {
         V = v;
         adj = new ArrayList<>(v);
@@ -73,7 +73,7 @@ class Graph {
     public static void main(String args[])
     {
         // Create a graph given in the above diagram
-        Graph g = new Graph(6);
+        DagGraph g = new DagGraph(6);
         g.addEdge(5, 2);
         g.addEdge(5, 0);
         g.addEdge(4, 0);
