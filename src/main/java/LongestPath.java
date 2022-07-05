@@ -2,6 +2,9 @@ import java.util.ArrayList;
 
 /**
  * DAG : For singe source longest distance, simply -ve the weight value and find the Shorted path and revert back edge value again.
+ * https://www.youtube.com/watch?v=TXkDpqjDMHA&ab_channel=WilliamFiset
+ *
+ * If its a tree, the height path will be longest from root.
  *
  * DAG : Find any possible longest Path in a DAG.
  *  1. O(N2) DFS from every Node (N) and Max of all
@@ -16,7 +19,7 @@ import java.util.ArrayList;
     {
 
         int vertices;
-        ArrayList<Integer> edge[];
+        ArrayList<Integer>[] edge;
 
         Graph(int vertices)
         {

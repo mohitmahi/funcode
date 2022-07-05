@@ -34,18 +34,18 @@ class ShortestPath
     class Graph
     {
         private int V;
-        private LinkedList<AdjListNode>adj[];
+        private LinkedList<LinkedList<AdjListNode>> adj;
         Graph(int v)
         {
             V=v;
-            adj = new LinkedList[V];
+            adj = new LinkedList<>();
             for (int i=0; i<v; ++i)
-                adj[i] = new LinkedList<AdjListNode>();
+                adj.add(new LinkedList<>());
         }
         void addEdge(int u, int v, int weight)
         {
             AdjListNode node = new AdjListNode(v,weight);
-            adj[u].add(node);// Add v to u's list
+            adj.get(u).add(node);// Add v to u's list
         }
 
         // A recursive function used by shortestPath.
@@ -57,7 +57,7 @@ class ShortestPath
             Integer i;
 
             // Recur for all the vertices adjacent to this vertex
-            Iterator<AdjListNode> it = adj[v].iterator();
+            Iterator<AdjListNode> it = adj.get(v).iterator();
             while (it.hasNext())
             {
                 AdjListNode node =it.next();
@@ -103,7 +103,7 @@ class ShortestPath
                 Iterator<AdjListNode> it;
                 if (dist[u] != INF)
                 {
-                    it = adj[u].iterator();
+                    it = adj.get(u).iterator();
                     while (it.hasNext())
                     {
                         AdjListNode i= it.next();
