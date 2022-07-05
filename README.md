@@ -33,6 +33,6 @@
   > 
 
 # Tree
-> Rooted vs Non-Rooted Tree 
-> LCA: Least(Lowest) common ancestor:  Find Path from Root to both A, B and find the junction.
-> LCA: Do DFS from root, if root is either A/B return node, if both left/right is non-null return node, else go in one direction.
+* >Rooted vs Non-Rooted Tree 
+* > LCA: Least(Lowest) common ancestor:  Find Path from Root to both A, B and find the junction.
+* > LCA: Do DFS from root, if root is either A/B return node, if both left/right is non-null return node, else go in one direction.
