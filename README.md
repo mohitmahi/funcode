@@ -1,6 +1,16 @@
 # funcode
 
 # Graph
+> Question to ask:
+* is Directed ?
+* is Connected ? or multiple component
+* is Cyclic ? or Acyclic ? How many cycle
+* is Weighted ? -ve weight allowed ?
+* Dense Graph ? Matrix vs AdjList rep
+
+# Topological Sort:
+* > Modify DFS to have one more stack and once DFS of all child are completed, push current node to stack. Stack will have Topological order 
+
 ##Shortest Path
 (source vertex is always present for a SP problem)
 *  > Dijkstra’s algorithm (Greedy) O((V+E)LogV)
