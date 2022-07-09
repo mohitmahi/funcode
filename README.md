@@ -43,3 +43,8 @@
   > DP: For (i:1 => n) => For each tiles length T*m(times) dp[i] += dp[i-T]*m
   > dp[n] ==> Total number of ways to place T tiles over N places. 
 >  
+# String
+* > Longest Increasing Sub-sequence => [1,3,6,2,8,7] ==>  1,3,6,7 (4)  Build DAG(N2) and find longest path or use LogN for Binary Search keeping a sub array from left to right
+* > Longest Pallindromic SubString ==> expand around corner (i & i+1)
+* > Longest Increasing SubSeq => N * N matrix and traverse bottom up.
+* > Longest Pallindromic SubSeq => Reverse "S" and find LIS
