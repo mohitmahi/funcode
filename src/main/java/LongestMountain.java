@@ -43,21 +43,19 @@ public class LongestMountain {
 
         while (index < totalSteps - 1) {
             // Start Uphill
-            if (input.get(index) <= input.get(index + 1)) {
-                currentStep = 0;
-                while (index < totalSteps - 1 && input.get(index) <= input.get(index + 1)) {
-                    currentStep++;
-                    index++;
-                }
+            currentStep = 0;
+            while (index < totalSteps - 1 && input.get(index) <= input.get(index + 1)) {
+                currentStep++;
+                index++;
+
             }
             // Start Downhill
-            if (index < totalSteps - 1 && input.get(index) > input.get(index + 1)) {
-                while (index < totalSteps - 1 && input.get(index) > input.get(index + 1)) {
-                    currentStep++;
-                    index++;
-                }
-                longestLength = Math.max(longestLength, currentStep + 1);
+            while (index < totalSteps - 1 && input.get(index) > input.get(index + 1)) {
+                currentStep++;
+                index++;
             }
+            longestLength = Math.max(longestLength, currentStep + 1);
+
         }
         return longestLength;
     }

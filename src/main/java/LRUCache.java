@@ -1,3 +1,4 @@
+import com.google.common.util.concurrent.Monitor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -6,6 +7,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public enum LRUCache {
     SINGLETON_CACHE(3);
+
+    private Monitor mutex = new Monitor();
 
     final int capacity;
     final HashMap<Integer, Node> map;
@@ -47,6 +50,7 @@ public enum LRUCache {
     }
 
     public void addByKey(Integer key, Integer value) {
+        mutex.enter();
         if(map.get(key) == null) {
             Node node = Node.builder().key(key).value(value).build();
             count.addAndGet(1);
@@ -63,6 +67,7 @@ public enum LRUCache {
             node.setValue(value);
             moveToHead(node);
         }
+        mutex.leave();
     }
 
     private void moveToHead(Node node) {
