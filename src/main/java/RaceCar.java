@@ -8,7 +8,7 @@ import java.util.Set;
 public class RaceCar {
 
     public static void main(String[] args) {
-        System.out.println("Minimum Step will be:: " + findMinimumStep(4));
+        System.out.println("Minimum Step will be:: " + findMinimumStep(6));
     }
 
     private static int findMinimumStep(int target) {
@@ -17,7 +17,7 @@ public class RaceCar {
 
         final Node startNode = new RaceCar.Node(0,1);
 
-        final QItem firstItem = getAQueueItem(0, startNode);
+        final QItem firstItem = getAQueueItem(0, startNode, "");
         queue.add(firstItem);
 
         System.out.println("[stepCount, node.speed , node.position]");
@@ -31,25 +31,22 @@ public class RaceCar {
 
             set.add(currentQItem.node); //mark as visited
 
-            System.out.println("A");
-            //Move forward
-            queue.add(getAQueueItem(
-                    currentQItem.stepCount + 1, new RaceCar.Node(currentQItem.node.position + currentQItem.node.speed,2 * currentQItem.node.speed)));
-
             if(isReverseRequired(target, currentQItem)) {
-                System.out.println("R");
                 // need to reverse
                 final int newSpeed = currentQItem.node.speed > 0 ? -1 : 1;
                 queue.add(getAQueueItem(currentQItem.stepCount + 1,
-                        new RaceCar.Node(currentQItem.node.position,newSpeed)));
+                        new RaceCar.Node(currentQItem.node.position,newSpeed), currentQItem.path + "->R"));
             }
+           //Move forward
+            queue.add(getAQueueItem(
+                    currentQItem.stepCount + 1, new RaceCar.Node(currentQItem.node.position + currentQItem.node.speed,2 * currentQItem.node.speed), currentQItem.path + "->A"));
 
         }
         return -1;
     }
 
-    private static QItem getAQueueItem(int stepCount, Node position) {
-        return new RaceCar.QItem(position,stepCount);
+    private static QItem getAQueueItem(int stepCount, Node position, String path) {
+        return new RaceCar.QItem(position,stepCount, path);
     }
 
     private static boolean isReverseRequired(int target, QItem currentQItem) {
@@ -61,15 +58,17 @@ public class RaceCar {
     static class QItem{
         private  Node node;
         private  int stepCount;
+        private String path;
 
-        public QItem(Node position, int stepCount) {
+        public QItem(Node position, int stepCount, String path) {
             this.node = position;
             this.stepCount = stepCount;
+            this.path = path;
         }
 
         @Override
         public String toString() {
-            return "[" + stepCount + ", " + node.speed + ", " + node.position + "]";
+            return "[" + stepCount + ", " + node.speed + ", " + node.position + "==>" + path + "]";
         }
     }
 
