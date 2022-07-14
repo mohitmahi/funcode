@@ -33,7 +33,7 @@ public class ChatServer extends AbstractVerticle {
         Router router = Router.router(vertx);
 
         router.route().handler(BodyHandler.create());
-        router.route("/v1/sendMessage")
+        router.post("/v1/sendMessage")
                 .consumes("application/json")
                 .handler(this::postToEventBus);
 
