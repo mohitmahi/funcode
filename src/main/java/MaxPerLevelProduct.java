@@ -40,12 +40,12 @@ public class MaxPerLevelProduct {
         while (!queue.isEmpty()) {
             int qSize = queue.size();
             int max = Integer.MIN_VALUE;
-            while (qSize-- > 0) { //Total item at current Level  "L"
+            while (qSize-- > 0) { //loop only item at current Level  "L"
                 final TreeNode current = queue.poll();
                 max = Math.max(max, current.value);
 
-                if(current.left != null) queue.add(current.left);
-                if(current.right != null) queue.add(current.right);
+                if(current.left != null) queue.add(current.left); //add L+1 level item
+                if(current.right != null) queue.add(current.right); //add L+1 level item
             }
             result *= max;
         }
