@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+//https://leetcode.com/problems/3sum/solution/
 // 2 SUM => K => Use a HashMap/Set or Left/Right Pointer
 // 3 SUM => 0 => Pivot and then find 2 sum which is complement of pivot
 public class ThreeSum {

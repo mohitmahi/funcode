@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+//https://leetcode.com/problems/longest-string-chain/discuss/2153004/Explaining-Three-Approaches-or-JAVA
 public class LongestStringChain {
     private static Set<String> wordDict;
     private static Map<String, Integer> memo;

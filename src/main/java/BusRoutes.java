@@ -22,7 +22,7 @@ public class BusRoutes {
             }
         }
         Queue<AbstractMap.SimpleEntry<Integer, Integer>> bfs = new LinkedList<>();
-        AbstractMap.SimpleEntry<Integer, Integer> entry = new AbstractMap.SimpleEntry<>(start, 0);
+        AbstractMap.SimpleEntry<Integer, Integer> entry = new AbstractMap.SimpleEntry<>(start, 0); // Start with No Bus (0)
         bfs.offer(entry);
 
         HashSet<Integer> stopSeen = new HashSet<>();
