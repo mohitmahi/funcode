@@ -15,7 +15,7 @@ public class FindNextPalindrome {
         final int size = inputS.length();
         if (input < 9) return input + 1;
 
-        boolean isEven = size/2 == 0;
+        boolean isEven = size%2 == 0;
         final String leftHalf = input == 9 ? "1" : inputS.substring(0, size / 2);
         StringBuilder temp = new StringBuilder(leftHalf);
         final String rightHalf = String.valueOf(temp.reverse());
