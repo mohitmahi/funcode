@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
-
+//Time complexity should be O(2^N) since at each instruction we can choose A or R. Actual runtime should be lower than O(2^N) because of pruning
 public class RaceCar {
 
     public static void main(String[] args) {
