@@ -1,13 +1,14 @@
+import org.junit.Assert;
 
 public class FindNextPalindrome {
     public static void main(String[] args) {
-        System.out.println(findNextPalindrome(1));
-        System.out.println(findNextPalindrome(9));
-        System.out.println(findNextPalindrome(923));
-        System.out.println(findNextPalindrome(123));
-        System.out.println(findNextPalindrome(99));
-        System.out.println(findNextPalindrome(2000));
-        System.out.println(findNextPalindrome(2999));
+        Assert.assertEquals(2, findNextPalindrome(1));
+        Assert.assertEquals(191,findNextPalindrome(9));
+        Assert.assertEquals(929,findNextPalindrome(923));
+        Assert.assertEquals(131,findNextPalindrome(123));
+        Assert.assertEquals(101,findNextPalindrome(99));
+        Assert.assertEquals(2002,findNextPalindrome(2000));
+        Assert.assertEquals(3003,findNextPalindrome(2999));
     }
 
     private static int findNextPalindrome(int input) {
@@ -34,7 +35,7 @@ public class FindNextPalindrome {
         if(isEven) {
             leftAddedOne = String.valueOf(Integer.parseInt(leftHalf) + 1); //2999 => 29+1=> 30+03
         } else {
-            leftAddedOne = String.valueOf(Integer.parseInt(leftHalf + inputS.charAt(size / 2)) + 1); //123 => 1(2+1) => 13+1 => 1-3-1
+            leftAddedOne = String.valueOf(Integer.parseInt(leftHalf + inputS.charAt(size / 2)) + 1); //123 => 1(2+1) => 131
         }
         temp = new StringBuilder(leftAddedOne);
         if(leftAddedOne.length() > leftHalf.length()) { //99 => 9-9 => 10=> 10-1X(Deleted) => 101
