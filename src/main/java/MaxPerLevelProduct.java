@@ -33,7 +33,7 @@ public class MaxPerLevelProduct {
 
     private static int findMaxProduct(TreeNode root) {
         final Queue<TreeNode> queue = new LinkedList<>();
-        if(root == null) return -1;
+        if (root == null) return -1;
 
         queue.add(root);
         int result = 1;
@@ -44,8 +44,8 @@ public class MaxPerLevelProduct {
                 final TreeNode current = queue.poll();
                 max = Math.max(max, current.value);
 
-                if(current.left != null) queue.add(current.left); //add L+1 level item
-                if(current.right != null) queue.add(current.right); //add L+1 level item
+                if (current.left != null) queue.add(current.left); //add L+1 level item
+                if (current.right != null) queue.add(current.right); //add L+1 level item
             }
             result *= max;
         }
