@@ -64,5 +64,5 @@
             }
         }
 * > O(N*N) Longest Pallindromic SubString ==> expand around corner (i & i+1)
-* > Longest Increasing SubSeq => N * N matrix and traverse bottom up.
-* > Longest Pallindromic SubSeq => Reverse "S" and find LIS
+* > Longest Common Seq (LCS) between s1/s2=> N * N matrix and traverse bottom up.
+* > Longest Pallindromic SubSeq => Reverse "S" and find LCS
