@@ -1,10 +1,14 @@
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 //https://leetcode.com/problems/longest-string-chain/discuss/2153004/Explaining-Three-Approaches-or-JAVA
+// If its sorted, then simply its LIS (Longest Increasing Subsequence) kind of problem
+
 public class LongestStringChain {
     private static Set<String> wordDict;
     private static Map<String, Integer> memo;
@@ -12,6 +16,57 @@ public class LongestStringChain {
     public static void main(String[] args) {
         String[] input = {"a","b","ba","bca","bda","bdca","bdcaf","bdcaee","bdcae","bdcafwefe","bdcafefwe"};
         System.out.println(longestStrChain(input));
+        System.out.println(longestStrChain_DP(input));
+        System.out.println(longestStrChain_LIS(input));
+    }
+
+    public static int longestStrChain_DP(String[] words) {
+        //LIS ==> Instead of arr[i] > arr[j] we need to check if arr[i].length > arr[j].length
+        Map<String, Integer> dp = new HashMap<>();
+        Arrays.sort(words, Comparator.comparingInt(String::length));  //log N
+        int res = 0;
+        for (String word : words) {
+            int best = 0;
+            for (int i = 0; i < word.length(); ++i) {
+                String prev = word.substring(0, i) + word.substring(i + 1);
+                best = Math.max(best, dp.getOrDefault(prev, 0) + 1);
+            }
+            dp.put(word, best);
+            res = Math.max(res, best);
+        }
+        return res;
+    }
+
+    public static int longestStrChain_LIS(String[] words) {
+        //LIS ==> Instead of arr[i] > arr[j] we need to check if arr[i].length > arr[j].length
+        int[] dp = new int[words.length];
+        Arrays.fill(dp, 1);
+        Arrays.sort(words, Comparator.comparingInt(String::length)); //log N
+        int res = 0;
+        for (int i=1; i < words.length; i++) {
+            for (int j=0; j < i; j++) {
+                if (compare(words[i], words[j]) && dp[j] + 1 > dp[i]) {
+                    dp[i] = dp[j] + 1;
+                }
+            }
+            res = Math.max(res, dp[i]);
+        }
+        return res;
+    }
+
+    private static boolean compare(String larger, String smaller) {
+        if (smaller.length() + 1 != larger.length()) return false;
+        int first = 0;
+        int second = 0;
+        while(first < larger.length() && second < smaller.length()) {
+            if(larger.charAt(first) == smaller.charAt(second)) {
+                first++;
+                second++;
+            } else {
+                first++;
+            }
+        }
+        return second == smaller.length();
     }
 
     public static int longestStrChain(String[] words) {
