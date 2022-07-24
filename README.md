@@ -38,7 +38,8 @@
 * > LCA: Do DFS from root, if root is either A/B return node, if both left/right is non-null return node, else go in one direction.
 * > BST/AVL/Red-Black: BST can be skewed and worst case can be N, which AVl/RB are BST which enforce balancing
   * >> AVL is more strict balanced so come with cost of rotation
-  * >> Between tree-map and heap, some time tree-map can be more useful if we need both min/max from a single object. 
+  * >> Between tree-map and heap, some time tree-map can be more useful if we need both min/max from with minimal memory footprint. 
+  * >> A heap is easily implemented in contiguous memory, i.e. an array. A red-black tree is typically constructed with a separate heap allocation for each node. The red-black tree ends up accessing memory all over the heap for each tree traversal.
   * >> Heap is simpler and take less memory overhead to get build, while RB BST Tree need pointer and coloring bits per node. 
   * >> TreeMap is based on Red-Black BST Tree: Easy to get Min/Max both using getFirst/getLast key O(1) else O(logN) for all other
   * >> PQueue- min/max Heap can just tell min/max in O(1) but finding any random number is O(N) 
