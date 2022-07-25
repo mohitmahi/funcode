@@ -1,4 +1,4 @@
-// DFS + Memoization Solution
+// DFS + Memoization Solution (0(M*N) ==> No Source/Destination can be any path from any cell
 // https://www.youtube.com/watch?v=wCc_nd-GiEc&ab_channel=NeetCode
 public class LongestIncreasingPathInMatrix {
     private static final int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};

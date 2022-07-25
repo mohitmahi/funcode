@@ -65,4 +65,7 @@
         }
 * > O(N*N) Longest Pallindromic SubString ==> expand around corner (i & i+1)
 * > Longest Common Seq (LCS) between s1/s2=> N * N matrix and traverse bottom up.
+  >> If Match dp[i][j] = 1 + dp[i-1][j-1]; else max(dp[i-1][j], dp[i][j-1]);
 * > Longest Pallindromic SubSeq => Reverse "S" and find LCS
+* > Longest Common SubString between S1/S2 (consecutive)
+  >> If Match dp[i][j] = 1 + dp[i-1][j-1]; else dp[i][j] = 0;
