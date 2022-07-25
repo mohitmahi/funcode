@@ -43,6 +43,10 @@ public class KthMax {
                 aMinHeap.poll(); // O(LogK) K is the Kth Max we want to capture
             }
         }
+        return getTopNCollectionList(aMinHeap);
+    }
+
+    private static List<String> getTopNCollectionList(PriorityQueue<MinQueueNode> aMinHeap) {
         List<String> nCollectionName = new ArrayList<>();
         while(aMinHeap.size() > 0) {
             nCollectionName.add(aMinHeap.poll().collectionName);
