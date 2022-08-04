@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.ServerWebSocket;
@@ -13,6 +14,7 @@ import io.vertx.core.shareddata.LocalMap;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
+import lombok.NoArgsConstructor;
 import model.ChatMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,16 +27,22 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
+@NoArgsConstructor
 public class ChatServer extends AbstractVerticle {
     private static final Logger logger = LoggerFactory.getLogger(ChatServer.class);
     private final Pattern chatURL = Pattern.compile("/chat/(\\w+)");
+
+    public ChatServer(Vertx vertx) {
+        this.vertx = vertx;
+    }
+
     @Override
     public void start() throws Exception {
         super.start();
         Router router = Router.router(vertx);
 
         router.route().handler(BodyHandler.create());
-        router.post("/v1/sendMessage")
+        router.post("/v1/pay")
                 .consumes("application/json")
                 .handler(this::postToEventBus);
 
@@ -116,9 +124,11 @@ public class ChatServer extends AbstractVerticle {
                 });
     }
 
-    private void postToEventBus(RoutingContext routingContext) {
+    //curl http://127.0.0.1:8080/v1/pay --data '{"from":"Mohit","message":"Hello"}' -H "Content-Type: application/json"
+
+    public void postToEventBus(RoutingContext routingContext) {
         final ChatMessage chatMessage = Json.decodeValue(routingContext.getBodyAsString(), ChatMessage.class);
-        getEventBus().<ChatMessage>request("Message-Bus", chatMessage, result -> { //Call on event-loop thread
+        getEventBus().<ChatMessage>request("Message-Bus1", chatMessage, result -> { //Call on event-loop thread
             if (result.succeeded()) {
                 logger.debug(Thread.currentThread() + "Post succeeded :: " + result.result().body());
                 routingContext.response()

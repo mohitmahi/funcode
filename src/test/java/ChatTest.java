@@ -1,58 +1,46 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
+import app.GenericCodec;
+import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
-import io.vertx.core.http.HttpMethod;
-import io.vertx.junit5.VertxExtension;
-import io.vertx.junit5.VertxTestContext;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.http.impl.Http2ServerResponse;
+import io.vertx.core.json.Json;
+import io.vertx.ext.web.RoutingContext;
+import model.ChatMessage;
+import org.junit.Before;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import server.ChatServer;
 
-@ExtendWith(VertxExtension.class)
 public class ChatTest {
+    @Mock
+    RoutingContext mock;
 
     Vertx vertx = Vertx.vertx();
 
-    @BeforeEach
-    void prepare(Vertx vertx, VertxTestContext testContext) {
-        // Deploy the verticle
-        vertx.deployVerticle(new ChatServer())
-                .onSuccess(ok -> testContext.completeNow())
-                .onFailure(failure -> testContext.failNow(failure));
+    @Before
+    public void setup() {
+        Mockito.when(mock.getBodyAsString()).thenReturn(Json.encode(ChatMessage.builder().from("Test").build()));
     }
-
     @Test
-    @DisplayName("Smoke test: check that the HTTP server responds")
-    void smokeTest(Vertx vertx, VertxTestContext testContext) {
-        // Issue an HTTP request
-        vertx.createHttpClient()
-                .request(HttpMethod.POST, 8080, "127.0.0.1", "/v1/sendMessage")
-                .compose(request -> request.send())
-                .compose(response -> response.body())
-                .onSuccess(body -> testContext.verify(() -> {
-                    // Check the response
-                    assertEquals("Greetings!", body.toString());
-                    testContext.completeNow();
-                }))
-                .onFailure(failure -> testContext.failNow(failure));
+    public void smokeTest1() throws Exception {
+
+        vertx.eventBus().registerDefaultCodec(ChatMessage.class, new GenericCodec<>(ChatMessage.class));
+        ChatServer server = new ChatServer(vertx);
+        server.start();
+
+        Mockito.when(mock.getBodyAsString()).thenReturn(Json.encode(ChatMessage.builder().from("Test").build()));
+        vertx.eventBus().<ChatMessage>consumer("Message-Bus1")
+                .handler(getEvents());
+
+        server.postToEventBus(mock);
+
     }
-
-    @Test
-    public void smokeTest(VertxTestContext context) {
-        vertx.createHttpClient()
-                .request(HttpMethod.POST, 8080, "127.0.0.1", "/chat/123")
-                .compose(req -> req.send())
-                .compose(res -> res.body())
-                .onSuccess(body -> {
-                    System.out.println("onSuccess:" + body);
-                    context.completeNow();
-                })
-                .onFailure(failure -> {
-                        System.out.println("Failure:" + failure);
-                        context.failNow(failure);
-                });
+    private Handler<Message<ChatMessage>> getEvents() {
+        Handler<Message<ChatMessage>> messageHandler = msg -> {
+            System.out.println("Received Message: " + msg.body().toString());
+            msg.reply("Accepted");
+        };
+        return messageHandler;
     }
 }
