@@ -8,7 +8,7 @@ public class LongestSubStringNoRepeating {
         if (s.length()==0) return 0;
         HashMap<Character, Integer> map = new HashMap<Character, Integer>(); // char, position
         int max=0;
-        for (int i=0, j=0; i<s.length(); ++i){
+        for (int i=0, j=0; i<s.length(); ++i){ // j is fixed on left and i is moving to right by 1
             if (map.containsKey(s.charAt(i))){
                 j = Math.max(j,map.get(s.charAt(i))+1);
             }
