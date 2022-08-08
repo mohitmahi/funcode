@@ -38,16 +38,17 @@ public class StringBuildGraph {
             int maxRow = input.length;
             int maxCol = input[0].length;
 
+            boolean[][] visited = new boolean[maxRow][maxCol];
             for (int cRow = 0; cRow < maxRow; cRow++) {
                 for (int cCol = 0; cCol < maxCol; cCol++) {
                     char current = input[cRow][cCol];
                     boolean canBeBuild = false;
                     if (current == toMatch.charAt(0)) {
-                        boolean[][] visited = new boolean[maxRow][maxCol];
                         visited[cRow][cCol] = true;
                         canBeBuild = doDfs(toMatch.substring(1), input, cCol, cRow, visited);
                     }
                     if (canBeBuild) return true;
+                    visited[cRow][cCol] = false;
                 }
             }
             return false;

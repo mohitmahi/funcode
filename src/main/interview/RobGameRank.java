@@ -130,6 +130,7 @@ int topGameID(string[] data) {
 
                         final String gameId = eachRecord[2];
                         gameUsageMap.put(gameId, gameUsageMap.getOrDefault(gameId, 0L) + newDuration);
+
                         if (maxUsage < gameUsageMap.get(gameId)) {
                             maxGameId = Integer.parseInt(gameId);
                             maxUsage = gameUsageMap.get(gameId);

@@ -128,17 +128,18 @@ public class ChatServer extends AbstractVerticle {
 
     public void postToEventBus(RoutingContext routingContext) {
         final ChatMessage chatMessage = Json.decodeValue(routingContext.getBodyAsString(), ChatMessage.class);
-        getEventBus().<ChatMessage>request("Message-Bus1", chatMessage, result -> { //Call on event-loop thread
+        getEventBus().<ChatMessage>request("Message-Bus", chatMessage, result -> { //Call on event-loop thread
             if (result.succeeded()) {
-                logger.debug(Thread.currentThread() + "Post succeeded :: " + result.result().body());
+                logger.info(Thread.currentThread() + "Post succeeded :: " + result.result().body());
                 routingContext.response()
-                        .putHeader("content-type", "application/json")
                         .setStatusCode(200)
-                        .end("Accepted on Vertx");
+                        .setStatusMessage("OKK")
+                        .end();
             } else {
-                logger.debug(Thread.currentThread() +" Message-Bus failed " + result.result().body());
+                logger.error(Thread.currentThread() +" Message-Bus failed " + result.cause());
                 routingContext.response()
                         .setStatusCode(500)
+                        .setStatusMessage("OKK")
                         .end("Vertx Service Unavailable");
             }
         });

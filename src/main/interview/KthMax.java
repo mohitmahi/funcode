@@ -25,7 +25,7 @@ public class KthMax {
                 FileTuple.builder().fileName("C").size(14).collectionName("CollectionB").build(),
                 FileTuple.builder().fileName("D").size(15).collectionName("CollectionB").build());
 
-        System.out.println(findTopNCollection(input, 5));
+        System.out.println(findTopNCollection(input, 2));
     }
 
     private static List<String> findTopNCollection(List<FileTuple> inputFiles, int Nth) {
