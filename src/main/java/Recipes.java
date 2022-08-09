@@ -1,7 +1,10 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Recipes {
 
@@ -17,7 +20,27 @@ public class Recipes {
         String[] sup = {"yeast","floor","corn"};
 
         System.out.println(findAllRecipes(rec, ing, sup));
+        System.out.println(findAllRecipes_Short(rec, ing, sup));
 
+    }
+
+    public static List<String> findAllRecipes_Short(String[] recipes, List<List<String>> ingredients, String[] supplies) {
+        Set<String> supple=new HashSet<>(Arrays.asList(supplies));
+        Set<String> ans=new HashSet<>();
+
+        for(int i=0;i<ingredients.size();i++){
+            outer:
+            for(int j=0;j<ingredients.size();j++){
+                if(ans.contains(recipes[j]))continue;//recipe has already been made
+                for(String ingre:ingredients.get(j)){
+                    if(!supple.contains(ingre))continue outer;//As all ingredients are not present in supplies
+                }
+                ans.add(recipes[j]);// add it to the answer
+                supple.add(recipes[j]); //add it to the supplies list so that another recipe can use this recipe
+            }
+
+        }
+        return new ArrayList<>(ans);
     }
 
     public static List<String> findAllRecipes(String[] recipes, List<List<String>> ingredients, String[] supplies) {

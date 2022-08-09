@@ -35,7 +35,7 @@ import java.util.TreeMap;
             jobs[i] = new long[]{dList.get(i).startTime, dList.get(i).endTime, dList.get(i).pay};
         }
         Arrays.sort(jobs, (a, b) -> (int) (a[1] - b[1])); //sort of end time (increasing)  O(NLogN)
-        TreeMap<Integer, Integer> dp = new TreeMap<>();
+        TreeMap<Integer, Integer> dp = new TreeMap<>(); //<EndTime, Cost> Increasing Order
         dp.put(0, 0); //0->cost with 0-> endTime
         for (long[] job : jobs) {
             // Time O(NlogN) for floorEntry BinarySearch on Red-Black Tree

@@ -15,7 +15,7 @@ public class RaceCar {
         final Queue<QItem> queue =  new LinkedList<>();
         final Set<Node> set = new HashSet<>();
 
-        final Node startNode = new RaceCar.Node(0,1);
+        final Node startNode = new RaceCar.Node(0,1);  //Position=>0 Speed=>1
 
         final QItem firstItem = getAQueueItem(0, startNode, "");
         queue.add(firstItem);

@@ -63,7 +63,7 @@ public class LongestStringChain {
                 first++;
                 second++;
             } else {
-                first++;
+                first++; //If first character is mismatch
             }
         }
         return second == smaller.length();

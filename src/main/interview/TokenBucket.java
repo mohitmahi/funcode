@@ -1,6 +1,9 @@
 import com.google.common.annotations.VisibleForTesting;
 import lombok.Setter;
 
+/**
+ * Stripe & Atlassian
+ */
 public class TokenBucket {
     private final long maxBucketSize;
     private final long refillRate;

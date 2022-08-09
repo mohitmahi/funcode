@@ -30,7 +30,7 @@ public class StringBuildGraph {
     // Duplicates: can be on diff position 'cell'
 
     // 'THFA' - Fail Fast if first chart is matching with any of my sibling then only fdo dfs
-
+    // Tweet - Phone
     */
     static class Solution {
 
@@ -46,9 +46,10 @@ public class StringBuildGraph {
                     if (current == toMatch.charAt(0)) {
                         visited[cRow][cCol] = true;
                         canBeBuild = doDfs(toMatch.substring(1), input, cCol, cRow, visited);
+                        visited[cRow][cCol] = false;
                     }
                     if (canBeBuild) return true;
-                    visited[cRow][cCol] = false;
+
                 }
             }
             return false;

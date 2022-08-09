@@ -10,6 +10,28 @@ public class BalancedString {
         validComplementMap.put('[', ']');
     }
 
+    enum OPEN_TYPE {
+        A("("),
+        B("{"),
+        C("[");
+
+        public final String value;
+        OPEN_TYPE(String s) {
+            this.value = s;
+        }
+    }
+
+    enum CLOSE_TYPE {
+        A(")"),
+        B("}"),
+        C("]");
+
+        public final String value;
+        CLOSE_TYPE(String s) {
+            this.value = s;
+        }
+    }
+
     public static void main(String[] args) {
         System.out.println(isBalancedString("(){}"));
         System.out.println(isBalancedString("(){[]}"));

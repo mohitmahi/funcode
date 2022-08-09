@@ -1,12 +1,31 @@
+import org.junit.Assert;
+
 public class FindNearestPalindrome {
+
+    public static void main(String[] args) {
+        Assert.assertEquals("0", nearestPalindromic("1"));
+        Assert.assertEquals("8",nearestPalindromic("9"));
+
+        Assert.assertEquals("1001",nearestPalindromic("999")); //odd with one more digit
+        Assert.assertEquals("919",nearestPalindromic("923")); //odd without adding one to Left half
+        Assert.assertEquals("121",nearestPalindromic("123")); //odd with adding one to Left half
+
+        Assert.assertEquals("10001",nearestPalindromic("9999")); //even with one more digit
+        Assert.assertEquals("3003",nearestPalindromic("2999")); //even with adding one to Left half
+        Assert.assertEquals("2002",nearestPalindromic("2000")); //even without adding one to Left half
+        Assert.assertEquals("999",nearestPalindromic("1000")); //even without adding one to Left half
+
+    }
+
     /*
     There are some cases missing the rules above,
 
     case 1. <= 10, OR equal to 100, 1000, 10000, ... We simply decrease n by 1.
-    case 2. 11, 101, 1001, 10001, 100001, ... We simply decrease n by 2.
-    case 3. 99, 999, 9999, 99999, ... We simply increase n by 2.
+    case 2. 11, 101, 1001, 10001, 100001, ... We simply decrease n by 2. (already pallindrome)
+    case 3. 99, 999, 9999, 99999, ... We simply increase n by 2. (already pallindrome)
      */
-    public String nearestPalindromic(String n) {
+
+    public static String nearestPalindromic(String n) {
         long nl = Long.parseLong(n);
         int len = n.length();
 
@@ -16,6 +35,7 @@ public class FindNearestPalindrome {
 
         // <= 10 or equal to 100, 1000, 10000, ...
         if (nl <= 10 || (nl % 10 == 0
+                && Long.parseLong(String.valueOf(n.charAt(0))) == 1
                 && Long.parseLong(n.substring(1)) == 0)) {
             return "" + (nl - 1);
         }
@@ -68,7 +88,7 @@ public class FindNearestPalindrome {
         return "" + closest;
     }
 
-    private long toPalindromeDigits(String num, boolean isEvenDigits) {
+    private static long toPalindromeDigits(String num, boolean isEvenDigits) {
         StringBuilder reversedNum = new StringBuilder(num).reverse();
         String palindromeDigits = isEvenDigits
                 ? num + reversedNum.toString()
@@ -76,7 +96,7 @@ public class FindNearestPalindrome {
         return Long.parseLong(palindromeDigits);
     }
 
-    private boolean isAllDigitNine(String n) {
+    private static boolean isAllDigitNine(String n) {
         for (char ch : n.toCharArray()) {
             if (ch != '9') {
                 return false;
